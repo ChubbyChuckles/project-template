@@ -1,13 +1,11 @@
 # Project Template
 
-A Python project for cloning and starting new projects.
+This is a Python project template with automated setup.
 
-## Installation
+## Setup Instructions
 
-```bash
-git clone https://github.com/ChubbyChuckles/project-template.git
-cd project-template
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
+1. Clone the repository or use the "Use this template" button on GitHub.
+2. Run the bootstrap script:
+   ```bash
+   python bootstrap.py
+   ```
