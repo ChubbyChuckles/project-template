@@ -6,5 +6,5 @@ exclude =
 per-file-ignores =
     docs/conf.py:E402
     tests/*.py:E501
-    categorical_trading/utils/*.py:E501
+    *.py:E501
 max-line-length = 80

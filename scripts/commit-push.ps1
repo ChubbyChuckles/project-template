@@ -75,7 +75,8 @@ if ($preCommitSuccess) {
         exit 0
     }
     Write-Host "Pushing to origin develop..."
-    git push origin develop
+    $currentBranch = git rev-parse --abbrev-ref HEAD
+    git push origin $currentBranch
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Failed to push to develop"
         exit 1
