@@ -49,7 +49,21 @@ def main():
         pip_cmd = f". {activate_script} && pip install -r requirements.txt"
     run_command(pip_cmd)
 
-    # Step 3: Update project name in key files (optional, e.g., README.md, conf.py)
+    # Step 3: Create .env file
+    env_file_path = ".env"
+    if not os.path.exists(env_file_path):
+        print(f"Creating {env_file_path}...")
+        with open(env_file_path, "w") as f:
+            f.write(
+                "# Environment variables for the project\n"
+                f"PROJECT_NAME={project_name}\n"
+                "# Add other environment variables here\n"
+                "# EXAMPLE_API_KEY=your_api_key_here\n"
+                "# DATABASE_URL=your_database_url_here\n"
+            )
+        print(f"Created {env_file_path} with default configuration")
+
+    # Step 4: Update project name in key files (optional, e.g., README.md, conf.py)
     if os.path.exists("README.md"):
         with open("README.md", "r") as f:
             content = f.read()
@@ -71,25 +85,25 @@ def main():
             f.write(content)
         print("Updated project name and author in docs/source/conf.py")
 
-    # Step 4: Initialize Git (in case .git was removed for template)
+    # Step 5: Initialize Git (in case .git was removed for template)
     if not os.path.exists(".git"):
         print("Initializing new Git repository...")
         run_command("git init")
         run_command("git add .")
         run_command('git commit -m "Initial commit for new project"')
 
-    # Step 5: Set up remote repository
+    # Step 6: Set up remote repository
     print(f"Setting up remote repository: {github_url}")
     run_command(
         "git remote remove origin", check=False
     )  # Remove existing origin if any
     run_command(f"git remote add origin {github_url}")
 
-    # Step 6: Create and switch to develop branch
+    # Step 7: Create and switch to develop branch
     print("Creating and switching to develop branch...")
     run_command("git checkout -b develop")
 
-    # Step 7: Run commit-push.ps1
+    # Step 8: Run commit-push.ps1
     print("Running commit-push.ps1...")
     if sys.platform == "win32":
         run_command("powershell -File scripts\\commit-push.ps1")

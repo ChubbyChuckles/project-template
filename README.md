@@ -72,6 +72,7 @@ Before starting, ensure the following are set up on your Windows 10 system:
    - The script will:
      - Create a virtual environment (`.venv`).
      - Install dependencies from `requirements.txt` (e.g., `numpy`, `pandas`, `matplotlib`, `sphinx`, `pre-commit`).
+     - Create a `.env` file in the root directory with the project name and placeholder environment variables.
      - Update `README.md`, `setup.py`, and `docs/source/conf.py` with the new project name and author.
      - Initialize a Git repository (if needed) and set the new remote URL.
      - Create and switch to a `develop` branch.
@@ -151,12 +152,18 @@ Before starting, ensure the following are set up on your Windows 10 system:
     ```
 
 - **Virtual Environment Issues**:
+
   - Ensure `.venv` is not ignored in `.gitignore`.
   - If the virtual environment fails to activate, recreate it:
     ```powershell
     python -m venv .venv
     .\.venv\Scripts\Activate.ps1
     ```
+
+- **.env File Issues**:
+  - The `bootstrap.py` script creates a `.env` file with the project name and example variables.
+  - Edit `.env` in VS Code to add project-specific environment variables (e.g., API keys, database URLs).
+  - Do not commit sensitive data to `.env`. For production use, add `.env` to `.gitignore` after setup and use a `.env.example` file for templates.
 
 ### Documentation
 
@@ -165,3 +172,16 @@ Before starting, ensure the following are set up on your Windows 10 system:
   cd docs
   .\make.bat html
   ```
+
+## Repository Structure
+
+- `bootstrap.py`: Automates project setup.
+- `requirements.txt`: Lists dependencies (e.g., `numpy`, `pandas`, `sphinx`, `pre-commit`).
+- `scripts/commit-push.ps1`: PowerShell script for staging, committing, and pushing changes.
+- `docs/`: Contains Sphinx files (`Makefile`, `make.bat`, `source/conf.py`, `source/index.rst`).
+- `.pre-commit-config.yaml`: Configures pre-commit hooks.
+- `setup.py`: Python package configuration.
+- `.env`: Template file for environment variables.
+- `README.md`: This file.
+
+For further customization, edit `setup.py`, `docs/source/conf.py`, `.env`, or add Python modules to the repository.
