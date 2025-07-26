@@ -1,0 +1,10 @@
+black
+colorama
+flake8
+numpy
+pandas
+pre_commit
+pytest
+python-dotenv
+setuptools
+Sphinx

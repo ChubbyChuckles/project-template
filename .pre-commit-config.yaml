@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-toml
+      - id: fix-byte-order-marker
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        args: [--line-length=80]
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        args: [--exclude=.venv, .pytest_cache]
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run pytest
+        entry: pytest tests/
+        language: system
+        files: ^(categorical_trading/|tests/).*\.py$
+        pass_filenames: false
+      - id: sphinx-build
+        name: Build Sphinx documentation
+        entry: powershell -Command "cd docs; make html"
+        language: system
+        files: ^(categorical_trading/|docs/).*$
+        pass_filenames: false
