@@ -1,5 +1,8 @@
 # Project Template
 
+[![CI](https://github.com/ChubbyChuckles/project-template/actions/workflows/ci.yml/badge.svg)](https://github.com/ChubbyChuckles/project-template/actions/workflows/ci.yml)
+[![Docs](https://readthedocs.org/projects/project-template/badge/?version=latest)](https://project-template.readthedocs.io)
+
 This is a Python project template with automated setup for creating new projects, including a virtual environment, dependency installation, Sphinx documentation, and Git workflow with pre-commit checks.
 
 ## Setup Instructions

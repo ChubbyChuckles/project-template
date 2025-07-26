@@ -30,6 +30,41 @@ target-version = ['py38']
 [tool.flake8]
 max-line-length = 100
 extend-ignore = "E203"
+exclude = [
+    ".venv",
+    ".pytest_cache",
+    "bootstrap.py",
+    "docs/source/conf.py",
+]
+
+[tool.pylint]
+ignore = [
+    "docs/source/conf.py",
+    "tests/__init__.py",
+    "src/__init__.py",
+    "src/config/",
+    "bootstrap.py",
+]
+ignore-patterns = [
+    ".*_generated\\.py$",
+]
+max-line-length = 100
+disable = [
+    "C0114",  # Missing module docstring
+    "F0401",  # Unable to import (import-error)
+    "E0611",  # No name in module (no-name-in-module)
+]
+
+[tool.mypy]
+python_version = "3.8"
+strict = true
+show_error_codes = true
+disable_error_code = [
+    "import",
+]
+exclude = [
+    "docs/source/conf.py",
+]
 
 [tool.pytest.ini_options]
 minversion = "6.0"

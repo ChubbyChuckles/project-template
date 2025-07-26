@@ -1,15 +1,11 @@
-# categorical_trading/main.py
-"""Main module for Categorical Trading."""
-
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
+# src/main.py
+"""Main module for Project-Template."""
 
 
-def main():
-    """Run the main trading application."""
+def main() -> None:
+    """Entry point for the project."""
+    print("Hello from project-template!")
 
-    print("Hello World.")
-    pass
+
+if __name__ == "__main__":
+    main()

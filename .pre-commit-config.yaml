@@ -7,11 +7,22 @@ repos:
       - id: check-yaml
       - id: check-toml
       - id: fix-byte-order-marker
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.2
+    hooks:
+      - id: mypy
+        args: [--strict, --show-error-codes, --disable-error-code=import]
+        exclude: ^docs/source/conf\.py$
+        additional_dependencies: [numpy, pandas, pytest]
   - repo: https://github.com/psf/black
     rev: 24.10.0
     hooks:
       - id: black
-        # No args to use pyproject.toml settings (line-length = 100)
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=100]
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
     hooks:
@@ -22,9 +33,17 @@ repos:
             --extend-ignore=E203,
             --exclude=.venv,
             .pytest_cache,
+            bootstrap.py,
+            docs/source/conf.py,
           ]
-        # Ensure flake8 receives files correctly
         pass_filenames: true
+  - repo: https://github.com/PyCQA/pylint
+    rev: v3.3.1
+    hooks:
+      - id: pylint
+        args: [--max-line-length=100, "--disable=C0114,F0401,E0611,C0327"]
+        exclude: ^(docs/source/conf\.py|tests/__init__\.py|src/__init__\.py|src/config/|.*_generated\.py$|bootstrap\.py$)
+        files: ^(src/|tests/).*\.py$
   - repo: local
     hooks:
       - id: pytest
