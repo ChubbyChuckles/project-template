@@ -74,14 +74,15 @@ if ($preCommitSuccess) {
         Write-Host "No changes to commit after pre-commit."
         exit 0
     }
-    Write-Host "Pushing to origin develop..."
     $currentBranch = git rev-parse --abbrev-ref HEAD
+    Write-Host "Pushing to origin '$currentBranch'..."
+
     git push origin $currentBranch
     if ($LASTEXITCODE -ne 0) {
-        Write-Error "Failed to push to develop"
+        Write-Error "Failed to push to '$currentBranch'"
         exit 1
     }
-    Write-Host "Successfully pushed to develop"
+    Write-Host "Successfully pushed to '$currentBranch'"
 }
 else {
     Write-Error "Pre-commit checks failed after maximum attempts."
