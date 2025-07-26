@@ -8,9 +8,7 @@ import getpass
 def run_command(command, shell=True, check=True):
     """Run a shell command and handle errors."""
     try:
-        result = subprocess.run(
-            command, shell=shell, check=check, text=True, capture_output=True
-        )
+        result = subprocess.run(command, shell=shell, check=check, text=True, capture_output=True)
         print(result.stdout)
         return result
     except subprocess.CalledProcessError as e:
@@ -49,6 +47,13 @@ def main():
         pip_cmd = f". {activate_script} && pip install -r requirements.txt"
     run_command(pip_cmd)
 
+    # Create Documentation
+    print("Generating Sphinx documentation...")
+    if sys.platform == "win32":
+        run_command("cd docs && make.bat html")
+    else:
+        run_command("cd docs && make html")
+
     # Step 3: Create .env file
     env_file_path = ".env"
     if not os.path.exists(env_file_path):
@@ -75,15 +80,36 @@ def main():
     if os.path.exists("docs/source/conf.py"):
         with open("docs/source/conf.py", "r") as f:
             content = f.read()
-        content = content.replace(
-            "project = 'project-template'", f"project = '{project_name}'"
-        )
-        content = content.replace(
-            "author = 'ChubbyChuckles'", f"author = '{getpass.getuser()}'"
-        )
+        content = content.replace("project = 'project-template'", f"project = '{project_name}'")
+        content = content.replace("author = 'ChubbyChuckles'", f"author = '{getpass.getuser()}'")
         with open("docs/source/conf.py", "w") as f:
             f.write(content)
         print("Updated project name and author in docs/source/conf.py")
+
+    # Add to main() after updating conf.py
+    if os.path.exists("pyproject.toml"):
+        with open("pyproject.toml", "r") as f:
+            content = f.read()
+        content = content.replace('name = "project-template"', f'name = "{project_name}"')
+        content = content.replace(
+            'Homepage = "https://github.com/ChubbyChuckles/project-template"',
+            f'Homepage = "{github_url}"',
+        )
+        content = content.replace(
+            'authors = [{name = "ChubbyChuckles", email = "christian.rickert.1989@gmail.com"}]',
+            f'authors = [{{name = "{getpass.getuser()}", email = ""}}]',
+        )
+        with open("pyproject.toml", "w") as f:
+            f.write(content)
+        print("Updated project name, URL, and author in pyproject.toml")
+
+    if os.path.exists("LICENSE"):
+        with open("LICENSE", "r") as f:
+            content = f.read()
+        content = content.replace("ChubbyChuckles", getpass.getuser())
+        with open("LICENSE", "w") as f:
+            f.write(content)
+        print("Updated copyright holder in LICENSE")
 
     # Step 5: Initialize Git (in case .git was removed for template)
     if not os.path.exists(".git"):
@@ -94,9 +120,7 @@ def main():
 
     # Step 6: Set up remote repository
     print(f"Setting up remote repository: {github_url}")
-    run_command(
-        "git remote remove origin", check=False
-    )  # Remove existing origin if any
+    run_command("git remote remove origin", check=False)  # Remove existing origin if any
     run_command(f"git remote add origin {github_url}")
 
     # Step 7: Create and switch to develop branch
@@ -108,9 +132,7 @@ def main():
     if sys.platform == "win32":
         run_command("powershell -File scripts\\commit-push.ps1")
     else:
-        print(
-            "Error: commit-push.ps1 is Windows-specific. Please adapt for non-Windows systems."
-        )
+        print("Error: commit-push.ps1 is Windows-specific. Please adapt for non-Windows systems.")
         sys.exit(1)
 
 

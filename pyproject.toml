@@ -1,0 +1,36 @@
+[project]
+name = "project-template"
+version = "0.1.0"
+description = "A Python project template with automated setup and documentation"
+authors = [{name = "ChubbyChuckles", email = "christian.rickert.1989@gmail.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinxcontrib-napoleon",
+    "pre-commit",
+]
+
+[project.urls]
+Homepage = "https://github.com/ChubbyChuckles/project-template"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = "E203"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]

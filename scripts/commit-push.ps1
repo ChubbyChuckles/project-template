@@ -24,14 +24,23 @@ while ($attempt -le $maxAttempts -and -not $preCommitSuccess) {
     $preCommitOutput = pre-commit run --all-files 2>&1 | Out-String
     $exitCode = $LASTEXITCODE
     Write-Host $preCommitOutput
+    # Save pre-commit output to a log file for debugging
+    $preCommitOutput | Out-File -FilePath pre-commit.log -Encoding utf8
 
     if ($exitCode -eq 0) {
         $preCommitSuccess = $true
     }
     else {
-        # Check if failure was due to black reformatting
-        if ($preCommitOutput -match "reformatted.*\.py") {
-            Write-Host "Black reformatted files. Staging changes and retrying..."
+        # Check if failure was due to black reformatting or flake8 E501 errors
+        if ($preCommitOutput -match "reformatted.*\.py" -or $preCommitOutput -match "E501.*line too long") {
+            Write-Host "Detected black reformatting or flake8 E501 (line too long) errors."
+            Write-Host "Running 'black .' to ensure formatting to 100 characters..."
+            black .
+            if ($LASTEXITCODE -ne 0) {
+                Write-Error "Black failed to reformat files"
+                exit 1
+            }
+            Write-Host "Staging changes and retrying..."
             git add .
             if ($LASTEXITCODE -ne 0) {
                 Write-Error "Failed to stage reformatted files"
@@ -39,13 +48,15 @@ while ($attempt -le $maxAttempts -and -not $preCommitSuccess) {
             }
             $attempt++
             if ($attempt -gt $maxAttempts) {
-                Write-Error "Maximum pre-commit attempts reached after black reformatting"
+                Write-Error "Maximum pre-commit attempts reached after handling black or flake8 E501 issues"
+                Write-Host "Check pre-commit.log for details"
                 git status
                 exit 1
             }
         }
         else {
-            Write-Error "Pre-commit checks failed for reasons other than black reformatting. Please fix issues and try again."
+            Write-Error "Pre-commit checks failed for reasons other than black reformatting or flake8 E501 errors. Please fix issues and try again."
+            Write-Host "Check pre-commit.log for details"
             git status
             exit 1
         }
@@ -86,6 +97,7 @@ if ($preCommitSuccess) {
 }
 else {
     Write-Error "Pre-commit checks failed after maximum attempts."
+    Write-Host "Check pre-commit.log for details"
     git status
     exit 1
 }

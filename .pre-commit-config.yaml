@@ -11,23 +11,31 @@ repos:
     rev: 24.10.0
     hooks:
       - id: black
-        args: [--line-length=80]
+        # No args to use pyproject.toml settings (line-length = 100)
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
     hooks:
       - id: flake8
-        args: [--exclude=.venv, .pytest_cache]
+        args:
+          [
+            --max-line-length=100,
+            --extend-ignore=E203,
+            --exclude=.venv,
+            .pytest_cache,
+          ]
+        # Ensure flake8 receives files correctly
+        pass_filenames: true
   - repo: local
     hooks:
       - id: pytest
         name: Run pytest
         entry: pytest tests/
         language: system
-        files: ^(categorical_trading/|tests/).*\.py$
+        files: ^(src/|tests/).*\.py$
         pass_filenames: false
       - id: sphinx-build
         name: Build Sphinx documentation
         entry: powershell -Command "cd docs; make html"
         language: system
-        files: ^(categorical_trading/|docs/).*$
+        files: ^(src/|docs/).*$
         pass_filenames: false

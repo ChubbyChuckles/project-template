@@ -1,9 +1,7 @@
 import os
 import sys
 
-sys.path.insert(
-    0, os.path.abspath("../..")
-)  # Adjust to point to your project root
+sys.path.insert(0, os.path.abspath("../.."))  # Adjust to point to your project root
 
 extensions = [
     "sphinx.ext.autodoc",  # For documenting Python code
