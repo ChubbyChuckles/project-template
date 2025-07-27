@@ -1,4 +1,4 @@
-# Contributing to Categorical-Trading
+# Contributing to Project-Template
 
 Thank you for considering contributing to the Categorical-Trading project, a Python template repository designed to streamline project setup with automated linting, testing, and documentation. We value contributions that enhance functionality, improve code quality, or expand documentation. This guide outlines the steps to contribute effectively and maintain the project's high standards.
 
