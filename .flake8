@@ -1,0 +1,10 @@
+[flake8]
+exclude =
+    .venv,
+    __pycache__,
+    *.pyc
+per-file-ignores =
+    docs/conf.py:E402
+    tests/*.py:E501
+    *.py:E501
+max-line-length = 80
