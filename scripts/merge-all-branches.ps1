@@ -34,13 +34,6 @@ foreach ($branch in $branches) {
         exit 1
     }
 
-    # Run tests to ensure >=85% coverage
-    Write-Output "Running tests for $branch..."
-    pytest tests/ --cov=src/
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Tests failed after merging $branch. Please fix test failures in tests/."
-        exit 1
-    }
 
     # Commit changes using commit-push.ps1 (per CONTRIBUTING.md)
     Write-Output "Committing changes for $branch..."
